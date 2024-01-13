@@ -4,6 +4,7 @@ function ToDoList() {
     const [task, setTask] = useState(JSON.parse(localStorage.getItem("TodoItems")) || []);
     const [newTask, setNewTask] = useState("");
     const [currentDay, setCurrentDay] = useState("");
+    const [editIndex, setEditIndex] = useState(null);
 
     useEffect(() => {
         const daysOfWeek = [
@@ -18,13 +19,11 @@ function ToDoList() {
         const currentDate = new Date();
         const dayOfWeek = daysOfWeek[currentDate.getDay()];
         setCurrentDay(dayOfWeek);
-        
     }, []);
 
     useEffect(() => {
         localStorage.setItem("TodoItems", JSON.stringify(task));
     }, [task]);
-      
 
     function handleInputChange(event) {
         setNewTask(event.target.value);
@@ -39,7 +38,13 @@ function ToDoList() {
 
     function handleEnterKeyPress(event) {
         if (event.key === "Enter") {
-            addTask();
+            if (editIndex !== null) {
+                // If editing, save the edit
+                saveEdit(editIndex);
+            } else {
+                // If not editing, add a new task
+                addTask();
+            }
         }
     }
 
@@ -71,25 +76,33 @@ function ToDoList() {
     }
 
     function handleCompleteTask(index, event) {
-        setTask(
-            task.filter((obj, i) => {
-                if (i === index) {
-                    obj.completed = event.target.checked;
-                }
-                return obj;
-            })
+        setTask((tasks) =>
+            tasks.map((obj, i) => (i === index ? { ...obj, completed: event.target.checked } : obj))
         );
+    }
+
+    function editList(index) {
+        setEditIndex(index);
+        setNewTask(task[index].text); // Set the editing text to the original text
+    }
+
+    function saveEdit(index) {
+        setTask((tasks) =>
+            tasks.map((obj, i) => (i === index ? { ...obj, text: newTask } : obj))
+        );
+        setEditIndex(null);
+        setNewTask("");
     }
 
     return (
         <div className="to-do-list">
-            <h1>To-DO-List</h1>
+            <h1>To Do List</h1>
             <h2>{`Whoops, it's ${currentDay} ☕😊`}</h2>
             <div className="input-container">
                 <input
                     type="text"
                     value={newTask}
-                    placeholder="Enter new task ..."
+                    placeholder={editIndex !== null ? "" : "Enter new task..."}
                     onChange={handleInputChange}
                     onKeyDown={handleEnterKeyPress}
                 />
@@ -100,26 +113,42 @@ function ToDoList() {
             <ol>
                 {task.map((taskItem, index) => (
                     <li key={index}>
-                        <input
-                            type="checkbox"
-                            onChange={(event) => handleCompleteTask(index, event)}
-                        />
-                        {taskItem.completed ? (
-                            <span className="text">
-                                <del>{taskItem.text}</del>{" "}
-                            </span>
+                        {index === editIndex ? (
+                            <div>
+                                <input
+                                    type="text"
+                                    value={newTask}
+                                    onChange={handleInputChange}
+                                />
+                                <button className="save-button" onClick={() => saveEdit(index)}>Save</button>
+                            </div>
                         ) : (
-                            <span className="text">{taskItem.text}</span>
+                            <>
+                                <input
+                                    type="checkbox"
+                                    onChange={(event) => handleCompleteTask(index, event)}
+                                />
+                                {taskItem.completed ? (
+                                    <span className="text">
+                                        <del>{taskItem.text}</del>{" "}
+                                    </span>
+                                ) : (
+                                    <span className="text">{taskItem.text}</span>
+                                )}
+                                <button className="delete-button" onClick={() => deleteTask(index)}>
+                                    <i className="fas fa-trash" style={{ color: "#fff" }}></i>
+                                </button>
+                                <button className="move-button" onClick={() => moveTaskUp(index)}>
+                                    👆
+                                </button>
+                                <button className="move-button" onClick={() => moveTaskDown(index)}>
+                                    👇
+                                </button>
+                                <button className="edit-button" onClick={() => editList(index)}>
+                                <i className="fa-solid fa-pen-to-square" style={{color: "#fff"}}></i>
+                                </button>
+                            </>
                         )}
-                        <button className="delete-button" onClick={() => deleteTask(index)}>
-                            <i className="fas fa-trash" style={{ color: "#fff" }}></i>
-                        </button>
-                        <button className="move-button" onClick={() => moveTaskUp(index)}>
-                            👆
-                        </button>
-                        <button className="move-button" onClick={() => moveTaskDown(index)}>
-                            👇
-                        </button>
                     </li>
                 ))}
             </ol>

@@ -59,17 +59,17 @@ input[type='text']{
   padding: 10px;
   border: 2px solid hsl(0, 0%, 80%, 0.5);
   border-radius: 5px;
-  color: hsl(0, 0%, 0%,0.5);
+  
 }
 
-ol{
+ol{ 
   padding: 0;
   margin: 0 auto; 
   width: fit-content;
 }
 
 li{
-  margin-top: 1.5rem;
+  margin-top: 1.7rem;
   font-size: 1.5rem;
   font-weight: bold;
   padding: 15px;
@@ -78,10 +78,13 @@ li{
   border-radius: 5px;
   display: flex;
   align-items: center;
+  transition: transform 0.4s ease-in-out;
 
 }
 li:hover{
   background-color: rgb(177, 241, 230);
+  transform: scale(1.1);
+ 
 }
 
 .text{
@@ -90,8 +93,28 @@ li:hover{
 
 .delete-button, .move-button{
    padding: 7px 11px;
-   font-size: 1.1rem;
+   font-size: 1rem;
    margin-left: 10px;
+}
+
+.edit-button{
+  padding: 7px 11px;
+   font-size: 1rem;
+   margin-left: 10px;
+   background-color: rgb(235, 190, 56);
+}
+.edit-button:hover{
+  background-color: rgb(17, 15, 12);
+}
+
+.save-button{
+  padding: 7px 11px;
+  font-size: 1.8rem;
+  margin-left: 10px;
+  background-color: rgb(19, 18, 15);  
+}
+.save-button:hover{
+  background-color: rgb(51, 45, 45);
 }
 
 li input[type="checkbox"] {
