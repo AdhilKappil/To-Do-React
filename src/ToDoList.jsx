@@ -31,10 +31,16 @@ function ToDoList() {
 
     function addTask() {
         if (newTask.trim() !== "") {
-            setTask((tasks) => [...tasks, { text: newTask, completed: false }]);
-            setNewTask("");
+            // Check if the task already exists
+            if (!task.some((taskItem) => taskItem.text === newTask)) {
+                setTask((tasks) => [...tasks, { text: newTask, completed: false }]);
+                setNewTask("");
+            } else {
+                alert("Task already exists!");
+            }
         }
     }
+
 
     function handleEnterKeyPress(event) {
         if (event.key === "Enter") {
@@ -49,8 +55,12 @@ function ToDoList() {
     }
 
     function deleteTask(index) {
-        const updatedTasks = task.filter((_, i) => i !== index);
-        setTask(updatedTasks);
+        const confirmDelete = window.confirm("Are you sure you want to delete this task?");
+
+        if (confirmDelete) {
+            const updatedTasks = task.filter((_, i) => i !== index);
+            setTask(updatedTasks);
+        }
     }
 
     function moveTaskUp(index) {
@@ -98,24 +108,22 @@ function ToDoList() {
         <div className="to-do-list">
             <h1>To Do List</h1>
             <h2>{`Whoops, it's ${currentDay} ☕😊`}</h2>
-            <div className="input-container">
-                <input
+            <div className="input-group">
+                <input className="add-input"
                     type="text"
-                    value={newTask}
-                    placeholder={editIndex !== null ? "" : "Enter new task..."}
+                    value={editIndex == null ? newTask : ""}
+                    placeholder="Enter new task..."
                     onChange={handleInputChange}
                     onKeyDown={handleEnterKeyPress}
                 />
-                <button className="add-button" onClick={addTask}>
-                    <i className="fas fa-plus" style={{ color: "212121" }}></i>
-                </button>
+                <button className="submit-button" onClick={addTask}><span>ADD</span></button>
             </div>
             <ol className="scrollable-list">
                 {task.map((taskItem, index) => (
-                    <li key={index}>
+                    <li className="task-list" key={index}>
                         {index === editIndex ? (
                             <div>
-                                <input
+                                <input className="save-input"
                                     type="text"
                                     value={newTask}
                                     onChange={handleInputChange}
@@ -145,7 +153,7 @@ function ToDoList() {
                                     👇
                                 </button>
                                 <button className="edit-button" onClick={() => editList(index)}>
-                                <i className="fa-solid fa-pen-to-square" style={{color: "#fff"}}></i>
+                                    <i className="fa-solid fa-pen-to-square" style={{ color: "#fff" }}></i>
                                 </button>
                             </>
                         )}
