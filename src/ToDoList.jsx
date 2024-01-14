@@ -110,7 +110,7 @@ function ToDoList() {
                     <i className="fas fa-plus" style={{ color: "212121" }}></i>
                 </button>
             </div>
-            <ol>
+            <ol className="scrollable-list">
                 {task.map((taskItem, index) => (
                     <li key={index}>
                         {index === editIndex ? (

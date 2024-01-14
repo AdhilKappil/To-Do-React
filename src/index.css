@@ -1,11 +1,15 @@
 body{
-  background-color: hsl(0, 0%, 10%);
+  background: url(./assets/workplace-with-smartphone-laptop-black-table-top-view-copyspace-background.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  
 }
 
 .to-do-list{
   font-family: Arial, sans-serif;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 90px;
+  
 }
 
 h1{
@@ -70,9 +74,11 @@ ol{
 
 li{
   margin-top: 1.7rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  padding: 15px;
+  padding: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
   background-color: hsl(0, 0%, 97%);
   margin-bottom: 10px;
   border-radius: 5px;
@@ -93,14 +99,17 @@ li:hover{
 
 .delete-button, .move-button{
    padding: 7px 11px;
-   font-size: 1rem;
-   margin-left: 10px;
+   font-size: 0.6rem;
+   margin-left: 5px;
+}
+.delete-button{
+  margin-left: 10px;
 }
 
 .edit-button{
   padding: 7px 11px;
-   font-size: 1rem;
-   margin-left: 10px;
+   font-size: 0.6rem;
+   margin-left: 5px;
    background-color: rgb(235, 190, 56);
 }
 .edit-button:hover{
@@ -109,7 +118,7 @@ li:hover{
 
 .save-button{
   padding: 7px 11px;
-  font-size: 1.8rem;
+  font-size: 1,8rem;
   margin-left: 10px;
   background-color: rgb(19, 18, 15);  
 }
@@ -120,4 +129,16 @@ li:hover{
 li input[type="checkbox"] {
   margin-right: 10px;
   transform: scale(1.5); 
+}
+
+.scrollable-list {
+  max-height: 320px; /* Set the maximum height according to your requirements */
+  overflow-y: auto;  /* Use "auto" to show scrollbar only when needed */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For IE and Edge */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.scrollable-list::-webkit-scrollbar {
+  display: none;
 }
