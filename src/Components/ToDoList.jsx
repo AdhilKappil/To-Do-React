@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 function ToDoList() {
+
     const [task, setTask] = useState(JSON.parse(localStorage.getItem("TodoItems")) || []);
     const [newTask, setNewTask] = useState("");
     const [currentDay, setCurrentDay] = useState("");
     const [editIndex, setEditIndex] = useState(null);
+
+    const location = useLocation()
+    const name = location.state.name
 
     useEffect(() => {
         const daysOfWeek = [
@@ -97,16 +102,21 @@ function ToDoList() {
     }
 
     function saveEdit(index) {
-        setTask((tasks) =>
-            tasks.map((obj, i) => (i === index ? { ...obj, text: newTask } : obj))
-        );
-        setEditIndex(null);
-        setNewTask("");
-    }
+        const isDuplicate = task.some((taskItem, i) => i !== index && taskItem.text === newTask);
+      
+        if (isDuplicate) {
+          alert("Task already exists!");
+        } else {
+          setTask((tasks) => tasks.map((obj, i) => (i === index ? { ...obj, text: newTask } : obj)));
+          setEditIndex(null);
+          setNewTask("");
+        }
+      }
+      
 
     return (
         <div className="to-do-list">
-            <h1>To Do List</h1>
+            <h1>Welcome {name}</h1>
             <h2>{`Whoops, it's ${currentDay} ☕😊`}</h2>
             <div className="input-group">
                 <input className="add-input"
